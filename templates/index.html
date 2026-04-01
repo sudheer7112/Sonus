@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonus - Premium Audio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        /* Ultra Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-text {
+            text-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Liquid Intro Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.8;
+            animation: drift 12s infinite alternate ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(60px, -60px) scale(1.3);
+            }
+        }
+
+        /* Aesthetic Breathing Background */
+        @keyframes breathe {
+            0% {
+                transform: scale(1.1) rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.3) rotate(2deg);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(1.1) rotate(-2deg);
+                opacity: 0.6;
+            }
+        }
+
+        .vibe-active {
+            animation: breathe 20s infinite ease-in-out;
+            mix-blend-mode: screen;
+        }
+
+        /* NEW: NETFLIX-STYLE CINEMATIC REVEAL */
+        .cinematic-text {
+            display: inline-block;
+            opacity: 0;
+            /* Creates the dramatic zoom-out, un-blur, and spread effect */
+            animation: netflix-reveal 3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        @keyframes netflix-reveal {
+            0% {
+                transform: scale(2) translateZ(0);
+                opacity: 0;
+                letter-spacing: -30px;
+                filter: blur(20px);
+            }
+
+            30% {
+                opacity: 1;
+                filter: blur(0px);
+            }
+
+            100% {
+                transform: scale(1) translateZ(0);
+                opacity: 1;
+                letter-spacing: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-[#0a0a0a] text-white h-[100dvh] flex flex-col font-sans select-none relative overflow-hidden">
+    <div id="dynamic-bg"
+        class="fixed inset-0 z-[-2] bg-cover bg-center opacity-30 blur-[120px] scale-125 transition-all duration-1000 ease-in-out vibe-active">
+    </div>
+    <div class="fixed inset-0 z-[-1] bg-black/40 backdrop-blur-[2px] transition-all duration-1000"></div>
+
+    <div id="intro-screen"
+        class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] transition-opacity duration-1000 overflow-hidden">
+
+        <div class="blob bg-cyan-500 w-[500px] h-[500px] top-0 left-0"></div>
+        <div class="blob bg-purple-600 w-[600px] h-[600px] bottom-0 right-0" style="animation-delay: -5s;"></div>
+        <div class="blob bg-pink-500 w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style="animation-delay: -2s;"></div>
+
+        <div class="relative z-10 text-center" onclick="startApp()">
+            <h1
+                class="cinematic-text text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 via-purple-400 to-pink-500 drop-shadow-[0_0_40px_rgba(168,85,247,0.6)] pl-3 md:pl-0">
+                SONUS
+            </h1>
+        </div>
+
+        <button onclick="startApp()"
+            class="mt-20 text-xs md:text-sm font-bold text-white tracking-[0.4em] animate-pulse hover:text-white transition z-10 glass-button px-8 py-3 rounded-full uppercase">
+            Tap to Enter
+        </button>
+    </div>
+
+    <div class="flex flex-1 overflow-hidden p-2 md:p-4 gap-4 h-full">
+
+        <aside class="w-64 glass-panel p-6 hidden md:flex flex-col gap-6 text-sm font-semibold text-white/80">
+            <div
+                class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-400 text-4xl font-black mb-6 tracking-tighter drop-shadow-lg">
+                SONUS
+            </div>
+            <a href="#"
+                class="text-white transition flex items-center gap-4 hover:translate-x-2 duration-300 glass-text"><i
+                    class="fa-solid fa-house text-lg"></i> Home</a>
+            <a href="#" class="hover:text-white transition flex items-center gap-4 hover:translate-x-2 duration-300"><i
+                    class="fa-solid fa-fire text-lg"></i> Trending</a>
+            <a href="#" class="hover:text-white transition flex items-center gap-4 hover:translate-x-2 duration-300"><i
+                    class="fa-solid fa-book-open text-lg"></i> Library</a>
+        </aside>
+
+        <main class="flex-1 glass-panel relative flex flex-col overflow-hidden">
+
+            <header
+                class="sticky top-0 z-[60] p-4 md:p-6 flex items-center justify-center sm:justify-between border-b border-white/10 bg-black/40 backdrop-blur-2xl w-full">
+
+                <div class="hidden sm:flex gap-2 text-white/80 w-[88px]">
+                    <button
+                        class="glass-button w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/20 transition"><i
+                            class="fa-solid fa-chevron-left"></i></button>
+                    <button
+                        class="glass-button w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/20 transition"><i
+                            class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="relative w-full max-w-2xl mx-auto flex-1 sm:px-4">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 text-white/70 text-lg"></i>
+                    <input type="text" id="searchInput" placeholder="Search for movies, albums, or songs..."
+                        autocomplete="off" spellcheck="false"
+                        class="w-full bg-white/10 border border-white/20 text-white font-medium rounded-full py-3.5 pl-12 sm:pl-14 pr-4 focus:outline-none focus:bg-black/50 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20 placeholder-white/50 shadow-xl backdrop-blur-md transition-all duration-300"
+                        oninput="debounceSearch(event)">
+                </div>
+
+                <div class="hidden sm:block w-[88px]"></div>
+            </header>
+
+            <div class="p-4 md:p-6 flex-1 overflow-y-auto pb-40">
+                <h2 id="greeting" class="text-3xl md:text-4xl font-black mb-8 tracking-tight glass-text">Discover</h2>
+
+                <div id="results" class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                    <p class="text-white/60 col-span-full mt-10 text-center text-lg glass-text">Start typing a Movie or
+                        Song name above...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div
+        class="fixed bottom-2 md:bottom-4 left-2 right-2 md:left-4 md:right-4 h-24 glass-panel flex items-center px-4 md:px-6 justify-between z-50 overflow-hidden">
+        <div id="loading-bar"
+            class="absolute top-0 left-0 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 w-full hidden animate-pulse">
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4 w-1/2 md:w-1/3 min-w-[150px]">
+            <img id="player-img" src=""
+                class="w-12 h-12 md:w-16 md:h-16 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.5)] hidden object-cover">
+            <div class="flex flex-col overflow-hidden">
+                <span id="player-title"
+                    class="text-sm md:text-base font-bold text-white line-clamp-1 glass-text"></span>
+                <span id="player-artist" class="text-xs md:text-sm text-white/70 line-clamp-1 mt-0.5"></span>
+            </div>
+        </div>
+
+        <div
+            class="flex flex-col items-center justify-center w-auto md:w-1/3 max-w-lg gap-2 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
+            <div class="flex items-center gap-4 md:gap-8 text-white/90">
+                <button class="hover:text-white transition hover:scale-110 hidden sm:block"><i
+                        class="fa-solid fa-shuffle"></i></button>
+                <button class="hover:text-white transition text-lg md:text-xl hover:scale-110"><i
+                        class="fa-solid fa-backward-step"></i></button>
+
+                <button id="play-pause-btn" onclick="togglePlayPause()"
+                    class="glass-button text-white w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.3)] border-2 border-white/40">
+                    <i id="play-icon" class="fa-solid fa-play ml-1 text-xl"></i>
+                </button>
+
+                <button class="hover:text-white transition text-lg md:text-xl hover:scale-110"><i
+                        class="fa-solid fa-forward-step"></i></button>
+                <button class="hover:text-white transition hover:scale-110 hidden sm:block"><i
+                        class="fa-solid fa-repeat"></i></button>
+            </div>
+
+            <div class="w-full items-center gap-3 text-xs text-white/80 font-bold hidden sm:flex">
+                <span id="current-time" class="w-8 text-right">0:00</span>
+                <div class="h-2.5 bg-black/40 rounded-full flex-1 relative cursor-pointer overflow-hidden border border-white/20 shadow-inner"
+                    onclick="seekAudio(event)" id="progress-container">
+                    <div id="progress-bar"
+                        class="h-full bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full w-0 pointer-events-none transition-all shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                    </div>
+                </div>
+                <span id="total-time" class="w-8">0:00</span>
+            </div>
+        </div>
+
+        <div class="w-auto md:w-1/3 flex items-center justify-end gap-4 md:gap-6 text-white/90">
+            <button id="download-btn" onclick="downloadCurrentSong()"
+                class="hidden glass-button w-10 h-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                <i class="fa-solid fa-download text-sm"></i>
+            </button>
+
+            <i class="fa-solid fa-volume-high text-sm hidden md:block"></i>
+            <div class="h-2.5 bg-black/40 rounded-full w-24 cursor-pointer border border-white/20 overflow-hidden shadow-inner hidden md:block"
+                onclick="setVolume(event)" id="volume-container">
+                <div id="volume-bar" class="h-full bg-white rounded-full w-full pointer-events-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. INTRO & SETUP ---
+        const startupSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b8f8e022.mp3?filename=startup-sound-106598.mp3");
+
+        function startApp() {
+            startupSound.volume = 0.5;
+            startupSound.play().catch(e => console.log("Audio blocked."));
+            const intro = document.getElementById('intro-screen');
+            intro.style.opacity = '0';
+            setTimeout(() => { intro.style.display = 'none'; }, 1000);
+            document.getElementById('searchInput').focus();
+        }
+
+        // --- 2. AUDIO ENGINE ---
+        const audio = new Audio();
+        const playBtn = document.getElementById('play-icon');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+        const loadingBar = document.getElementById('loading-bar');
+        const downloadBtn = document.getElementById('download-btn');
+
+        let currentStreamUrl = "";
+        let currentSongTitle = "";
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                currentTimeEl.innerText = formatTime(audio.currentTime);
+                totalTimeEl.innerText = formatTime(audio.duration);
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            playBtn.classList.remove('fa-pause');
+            playBtn.classList.add('fa-play');
+            progressBar.style.width = '0%';
+        });
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        function togglePlayPause() {
+            if (audio.src) {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.classList.remove('fa-play');
+                    playBtn.classList.add('fa-pause');
+                } else {
+                    audio.pause();
+                    playBtn.classList.remove('fa-pause');
+                    playBtn.classList.add('fa-play');
+                }
+            }
+        }
+
+        function seekAudio(event) {
+            if (audio.src && audio.duration) {
+                const container = document.getElementById('progress-container');
+                const clickX = event.offsetX;
+                const width = container.clientWidth;
+                audio.currentTime = (clickX / width) * audio.duration;
+            }
+        }
+
+        function setVolume(event) {
+            const container = document.getElementById('volume-container');
+            const clickX = event.offsetX;
+            const width = container.clientWidth;
+            const volume = clickX / width;
+            audio.volume = volume;
+            document.getElementById('volume-bar').style.width = `${volume * 100}%`;
+        }
+
+        // --- 3. DIRECT DOWNLOAD LOGIC ---
+        async function downloadCurrentSong() {
+            if (!currentStreamUrl) return;
+            const icon = downloadBtn.querySelector('i');
+            icon.className = "fa-solid fa-circle-notch fa-spin text-sm";
+
+            try {
+                const response = await fetch(currentStreamUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = `${currentSongTitle}.mp4`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (error) {
+                const a = document.createElement('a');
+                a.href = currentStreamUrl;
+                a.download = `${currentSongTitle}.mp4`;
+                a.target = "_blank";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+            icon.className = "fa-solid fa-download text-sm";
+        }
+
+        // --- 4. LIVE SEARCH (AUTOCOMPLETE) ---
+        let searchTimeout = null;
+
+        function debounceSearch(event) {
+            const query = event.target.value;
+            clearTimeout(searchTimeout);
+
+            if (query.trim().length === 0) {
+                document.getElementById('results').innerHTML = '<p class="text-white/60 col-span-full mt-10 text-center text-lg glass-text">Start typing a Movie or Song name above...</p>';
+                document.getElementById('greeting').innerText = "Discover";
+                return;
+            }
+            searchTimeout = setTimeout(() => { searchSongs(query); }, 400);
+        }
+
+        async function searchSongs(query) {
+            document.getElementById('greeting').innerText = `Results for "${query}"`;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="col-span-full flex flex-col items-center mt-20"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-white/80 mb-4 shadow-lg rounded-full"></i><p class="text-white/80 font-bold tracking-widest glass-text">SEARCHING...</p></div>';
+
+            try {
+                const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                resultsDiv.innerHTML = '';
+
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach(song => {
+                        const imageUrl = song.image.replace('150x150', '500x500');
+                        const safeTitle = song.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        const safeSubtitle = song.subtitle.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+
+                        // NEW UI: Emphasizing the Movie/Album Name
+                        const songHtml = `
+                            <div class="glass-button p-3 md:p-4 rounded-3xl cursor-pointer relative group flex flex-col justify-between h-full" 
+                                 onclick="playSong('${song.id}', '${imageUrl}', '${safeTitle}', '${safeSubtitle}')">
+                                <div>
+                                    <div class="relative mb-3 md:mb-4 overflow-hidden rounded-2xl shadow-lg border border-white/20">
+                                        <img src="${imageUrl}" alt="Cover" class="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <button class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-panel text-white w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                                            <i class="fa-solid fa-play ml-1 text-xl md:text-3xl text-white drop-shadow-md"></i>
+                                        </button>
+                                    </div>
+                                    <h3 class="font-bold text-white truncate text-base md:text-lg glass-text">${song.title}</h3>
+                                </div>
+                                
+                                <div class="mt-2 flex items-center gap-2 bg-black/30 w-full px-3 py-1.5 rounded-xl border border-white/10">
+                                    <i class="fa-solid fa-film text-xs text-cyan-400"></i>
+                                    <p class="text-xs text-white/90 truncate font-semibold w-full" title="Movie/Album: ${song.subtitle}">${song.subtitle}</p>
+                                </div>
+                            </div>
+                        `;
+                        resultsDiv.innerHTML += songHtml;
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p class="text-white/60 col-span-full text-center mt-10 text-lg glass-text">No results found.</p>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<p class="text-red-400 col-span-full text-center mt-10 glass-text font-bold">Error fetching data.</p>';
+            }
+        }
+
+        // --- 5. STREAMING ---
+        async function playSong(songId, image, title, artist) {
+            const imgEl = document.getElementById('player-img');
+            imgEl.src = image;
+            imgEl.classList.remove('hidden');
+            document.getElementById('player-title').innerText = title;
+            document.getElementById('player-artist').innerText = artist;
+
+            const bg = document.getElementById('dynamic-bg');
+            bg.style.backgroundImage = `url('${image}')`;
+
+            loadingBar.classList.remove('hidden');
+            downloadBtn.classList.add('hidden');
+
+            try {
+                const response = await fetch(`/api/stream/${songId}`);
+                const data = await response.json();
+
+                if (data.stream_url) {
+                    audio.src = data.stream_url;
+                    audio.play();
+                    playBtn.classList.remove('fa-play');
+                    playBtn.classList.add('fa-pause');
+
+                    currentStreamUrl = data.stream_url;
+                    currentSongTitle = title;
+
+                    downloadBtn.classList.remove('hidden');
+                    downloadBtn.classList.add('flex');
+
+                } else {
+                    alert("Error: Could not retrieve the streaming URL.");
+                }
+            } catch (error) {
+                console.error("Stream fetch error:", error);
+                alert("Failed to connect to the streaming server.");
+            } finally {
+                loadingBar.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+
+</html>
